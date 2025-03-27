@@ -1,1 +1,70 @@
+#include <Adafruit_NeoPixel.h>
 
+unsigned long steamInterval = 300000; //how long between steams (milliseconds)
+// 240000 = 4 minutes
+// 300000 = 5 minutes
+// 360000 = 6 minutes
+// 420000 = 7 minutes
+
+int motorPin = 11;
+int flashlightPin = 10;
+
+unsigned long previousMillis = 0;
+
+// Which pin on the Arduino is connected to the NeoPixels?
+#define LED_PIN    6
+
+// How many NeoPixels are attached to the Arduino?
+#define LED_COUNT 40
+
+// Declare our NeoPixel strip object:
+Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRBW + NEO_KHZ800);
+// Argument 1 = Number of pixels in NeoPixel strip
+// Argument 2 = Arduino pin number (most are valid)
+// Argument 3 = Pixel type flags, add together as needed:
+//   NEO_KHZ800  800 KHz bitstream (most NeoPixel products w/WS2812 LEDs)
+//   NEO_KHZ400  400 KHz (classic 'v1' (not v2) FLORA pixels, WS2811 drivers)
+//   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
+//   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
+//   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
+ 
+void setup() 
+{ 
+    pinMode(motorPin, OUTPUT);
+    pinMode(flashlightPin, OUTPUT);
+
+  randomSeed(analogRead(0)); // Seed the Random function for more truely random results
+
+  analogWrite(flashlightPin, 200);
+
+  strip.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+  strip.show();            // Turn OFF all pixels ASAP
+  strip.setBrightness(50); // Set BRIGHTNESS to about 1/5 (max = 255)
+  colorAll(strip.Color(150,   100,   0, 100));
+
+  analogWrite(motorPin, 210);
+  delay(2500);
+  analogWrite(motorPin, 0);
+
+  
+} 
+ 
+ 
+void loop() {
+  unsigned long currentMillis = millis();                     //  Update current time 
+
+  if(currentMillis - previousMillis >= steamInterval) { // if it's time to steam, activate the pump
+  previousMillis = currentMillis;
+    analogWrite(motorPin, 210);
+    delay(2500);
+    analogWrite(motorPin, 0);
+  }
+
+} 
+
+void colorAll(uint32_t color) {
+  for(int i=0; i<strip.numPixels(); i++) { // For each pixel in strip...
+    strip.setPixelColor(i, color);         //  Set pixel's color (in RAM)
+  }
+  strip.show();                          //  Update strip to match
+}
