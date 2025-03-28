@@ -1,1 +1,53 @@
+#include <IRremote.h>
+
+int RECV_PIN = 12; // Pin connected to IR sensor
+int bluePin = 2;
+int orangePin = 3;
+int greenPin = 4;
+
+IRrecv irrecv(RECV_PIN); // IR receiver object
+decode_results results; // To store the decoded results
+
+void setup() {
+    Serial.begin(9600);
+    irrecv.enableIRIn(); // Start the IR receiver
+
+    pinMode(bluePin, OUTPUT);
+    pinMode(orangePin, OUTPUT);
+    pinMode(greenPin, OUTPUT);
+}
+
+void loop() {
+    if (irrecv.decode(&results)) {
+        long int decode = results.value; // Store the decoded value
+        Serial.println(decode); // Display the received value on the Serial Monitor
+
+        switch (decode) {
+            case 0x1FE48B7: // Code for button 1
+                digitalWrite(bluePin, HIGH);
+                break;
+            case 0x1FE58A7: // Code for button 2
+                digitalWrite(bluePin, LOW);
+                break;
+            case 0x1FE7887: // Code for button 3
+                digitalWrite(orangePin, HIGH);
+                break;
+            case 0x1FE708F: // Code for button 4
+                digitalWrite(orangePin, LOW);
+                break;
+            case 0x1FEF807: // Code for button 5
+                digitalWrite(greenPin, HIGH);
+                break;
+            case 0x1FE00FF: // Code for button 6
+                digitalWrite(greenPin, LOW);
+                break;
+            default:
+                // Unknown code received, do nothing
+                break;
+        }
+
+        irrecv.resume(); // Resume the receiver to capture the next input
+        delay(10); // Small delay for stability
+    }
+}
 
