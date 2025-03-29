@@ -1,1 +1,15 @@
+### Components Used in the Project
+1. **Arduino Uno:** A microcontroller board used to control the entire circuit and run the code.
+2. **IR Sensor:** A sensor module that detects infrared signals from the IR remote to control the LEDs.
+3. **IR Remote:** A handheld remote that sends infrared signals to the IR sensor for wireless control.
+4. **LEDs (Blue, Orange, Green):** Visual indicators that light up based on remote signals.
+5. **Resistors (220Ω):** Used to limit the current for LEDs, preventing damage.
+6. **Breadboard:** A platform for connecting the circuit components without soldering.
+7. **Connecting Wires:** Used to establish connections between the Arduino, LEDs, and IR sensor.
+
+### Project Description
+This project aims to demonstrate wireless control of three LEDs using an IR remote. An Arduino Uno acts as the brain of the system,
+receiving input signals from an IR sensor. The IR remote sends unique codes for each button press, which the sensor decodes and transmits to the Arduino.
+Each code corresponds to specific actions: turning the blue, orange, or green LED on or off. By assigning these unique codes in the code's switch-case structure, the 
+project effectively enables remote-controlled lighting. This simple yet effective system illustrates the practical use of IR communication for device control.
 
